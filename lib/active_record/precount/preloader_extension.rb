@@ -66,9 +66,6 @@ module ActiveRecord
   module Precount
     module PreloaderExtension
       def preloader_for(reflection, owners)
-        preloader = super
-        return preloader if preloader
-
         case reflection.macro
         when :count_loader
           Associations::Preloader::CountLoader
