@@ -29,18 +29,18 @@ module ActiveRecord
 
       private
 
-      def apply_join_dependency(relation, join_dependency)
-        relation = super
-
-        # to count associated records in JOIN query, group scope is necessary
-        join_dependency.reflections.each do |reflection|
-          if reflection.macro == :count_loader
-            ar = reflection.active_record
-            relation = relation.group("#{ar.table_name}.#{ar.primary_key}")
+      def apply_join_dependency
+        super do |relation, join_dependency|
+          # to count associated records in JOIN query, group scope is necessary
+          join_dependency.reflections.each do |reflection|
+            if reflection.macro == :count_loader
+              ar = reflection.active_record
+              relation = relation.group("#{ar.table_name}.#{ar.primary_key}")
+            end
           end
-        end
 
-        relation
+          relation
+        end
       end
     end
   end
